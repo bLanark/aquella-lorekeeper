@@ -17,7 +17,7 @@ class SitePage extends Model
      * @var array
      */
     protected $fillable = [
-        'key', 'title', 'text', 'parsed_text', 'is_visible', 'can_comment'
+        'key', 'title', 'text', 'parsed_text', 'is_visible', 'can_comment', 'admin_only'
     ];
 
     /**
@@ -33,7 +33,7 @@ class SitePage extends Model
      * @var string
      */
     public $timestamps = true;
-    
+
     /**
      * Validation rules for creation.
      *
@@ -43,8 +43,9 @@ class SitePage extends Model
         'key' => 'required|unique:site_pages|between:3,25|alpha_dash',
         'title' => 'required|between:3,100',
         'text' => 'nullable',
+        'admin_only' => 'boolean'
     ];
-    
+
     /**
      * Validation rules for updating.
      *
@@ -54,6 +55,7 @@ class SitePage extends Model
         'key' => 'required|between:3,25|alpha_dash',
         'title' => 'required|between:3,100',
         'text' => 'nullable',
+        'admin_only' => 'boolean'
     ];
 
     /**

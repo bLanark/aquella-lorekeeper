@@ -34,11 +34,12 @@ class PageService extends Service
             $data['user_id'] = $user->id;
             if(!isset($data['is_visible'])) $data['is_visible'] = 0;
             if(!isset($data['can_comment'])) $data['can_comment'] = 0;
+            if(!isset($data['admin_only'])) $data['admin_only'] = 0;
 
             $page = SitePage::create($data);
 
             return $this->commitReturn($page);
-        } catch(\Exception $e) { 
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
@@ -48,7 +49,7 @@ class PageService extends Service
      * Updates a site page.
      *
      * @param  \App\Models\SitePage   $news
-     * @param  array                  $data 
+     * @param  array                  $data
      * @param  \App\Models\User\User  $user
      * @return bool|\App\Models\SitePage
      */
@@ -64,11 +65,12 @@ class PageService extends Service
             $data['user_id'] = $user->id;
             if(!isset($data['is_visible'])) $data['is_visible'] = 0;
             if(!isset($data['can_comment'])) $data['can_comment'] = 0;
+            if(!isset($data['admin_only'])) $data['admin_only'] = 0;
 
             $page->update($data);
 
             return $this->commitReturn($page);
-        } catch(\Exception $e) { 
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
@@ -91,7 +93,7 @@ class PageService extends Service
             $page->delete();
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) { 
+        } catch(\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
