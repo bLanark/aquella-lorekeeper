@@ -44,6 +44,14 @@ return [
                 'url' => 'admin/sales'
             ],
             [
+                'name' => 'Page Sections',
+                'url' => 'admin/page-sections'
+            ],
+            [
+                'name' => 'Page Categories',
+                'url' => 'admin/page-categories'
+            ],
+            [
                 'name' => 'Pages',
                 'url' => 'admin/pages'
             ]
