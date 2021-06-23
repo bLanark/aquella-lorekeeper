@@ -6,7 +6,45 @@
 {!! breadcrumbs(['Admin Panel' => 'admin', 'Home' => 'admin']) !!}
 
 <h1>Admin Dashboard</h1>
+
+
+
 <div class="row">
+    @if($news)
+    <div class="col-12">
+        <div class="card mb-3">
+        <div class="card-body">
+            <div class="float-right mt-2 mb-0" >
+            <a href="{!! url('admin/bulletins') !!}">More Staff Bulletins</a>
+            </div>
+            <h5 class="card-title">Latest Bulletin: {!! $news->displayName !!}</h5>
+            <small>
+                Posted {!! $news->post_at ? format_date($news->post_at) : format_date($news->created_at) !!} by {!! $news->user->displayName !!}
+            </small>
+            <div class="card-body py-1 pb-0">
+                <div class="parsed-text mt-2" id="bulletin">
+                    {!! $news->parsed_text !!}
+                </div>
+                <div class="text-right mt-2 mb-0 d-none" id="seemore" >
+                <a href="{!! $news->url !!}">Continue reading.</a>
+                </div>
+
+                <script>
+                if ($('#bulletin').height() > 200) {
+                    $('#bulletin').attr("style", "max-height:200px; overflow:hidden;");
+                    $('#seemore').attr("style", "display:block!important;");
+                }
+                </script>
+            </div>
+        </div>
+        </div>
+    </div>
+    @else
+    <div class="col-12">
+        <h5>No staff bulletins.</h5>
+    </div>
+    @endif
+    
     @if (Auth::user()->hasPower('manage_submissions'))
       <div class="col-sm-6">
           <div class="card mb-3">

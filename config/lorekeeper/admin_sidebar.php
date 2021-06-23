@@ -20,7 +20,7 @@ return [
             [
                 'name' => 'User Ranks',
                 'url' => 'admin/users/ranks'
-            ]
+            ],
         ]
     ],
     'Reports' => [
@@ -36,7 +36,7 @@ return [
         'power' => 'edit_pages',
         'links' => [
             [
-                'name' => 'News',
+                'name' => 'News & Bulletins',
                 'url' => 'admin/news'
             ],
             [
@@ -220,4 +220,13 @@ return [
             ],
         ]
     ],
+    'Misc' => [
+        'power' => 'staff',
+        'links' => [
+          [
+              'name'  =>  'Bulletins',
+              'url' =>  'admin/bulletins'
+          ],
+        ]
+    ]
 ];
