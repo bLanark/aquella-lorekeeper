@@ -169,6 +169,10 @@ return [
                 'url' => 'admin/data/traits'
             ],
             [
+                'name' => 'Character Titles',
+                'url' => 'admin/data/character-titles'
+            ],
+            [
                 'name' => 'Shops',
                 'url' => 'admin/data/shops'
             ],

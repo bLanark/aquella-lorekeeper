@@ -26,6 +26,7 @@ use App\Models\Character\CharacterTransfer;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterBookmark;
 use App\Models\User\UserCharacterLog;
+use App\Models\Character\CharacterTitle;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\Rarity;
@@ -233,7 +234,6 @@ class CharacterManager extends Service
                 $data['subtype_id'] = isset($data['subtype_id']) && $data['subtype_id'] ? $data['subtype_id'] : null;
                 $data['rarity_id'] = (isset($data['rarity_id']) && $data['rarity_id']) ? $data['rarity_id'] : null;
 
-
                 // Use default images for MYO slots without an image provided
                 if(!isset($data['image']))
                 {
@@ -246,7 +246,7 @@ class CharacterManager extends Service
             }
             $imageData = Arr::only($data, [
                 'species_id', 'subtype_id', 'rarity_id', 'use_cropper',
-                'x0', 'x1', 'y0', 'y1',
+                'x0', 'x1', 'y0', 'y1', 'title_id', 'title_data'
             ]);
             $imageData['use_cropper'] = isset($data['use_cropper']) ;
             $imageData['description'] = isset($data['image_description']) ? $data['image_description'] : null;
@@ -258,6 +258,8 @@ class CharacterManager extends Service
             $imageData['is_visible'] = isset($data['is_visible']);
             $imageData['extension'] = (Config::get('lorekeeper.settings.masterlist_image_format') ? Config::get('lorekeeper.settings.masterlist_image_format') : (isset($data['extension']) ? $data['extension'] : $data['image']->getClientOriginalExtension()));
             $imageData['character_id'] = $character->id;
+            $imageData['title_id'] = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $imageData['title_data'] = isset($data['title_data']) && $data['title_data'] && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
 
             $image = CharacterImage::create($imageData);
 
@@ -690,6 +692,7 @@ class CharacterManager extends Service
             $old['species'] = $image->species_id ? $image->species->displayName : null;
             $old['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $old['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $old['title'] = $image->title_id ? $image->title->displayName : ($image->title_data ? $image->title_data : null);
 
             // Clear old features
             $image->features()->delete();
@@ -705,6 +708,8 @@ class CharacterManager extends Service
             $image->species_id = $data['species_id'];
             $image->subtype_id = $data['subtype_id'] ?: null;
             $image->rarity_id = $data['rarity_id'];
+            $image->title_id = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $image->title_data = isset($data['title_data']) && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
             $image->save();
 
             $new = [];
@@ -712,6 +717,7 @@ class CharacterManager extends Service
             $new['species'] = $image->species_id ? $image->species->displayName : null;
             $new['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $new['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $new['title'] = $image->title_id ? $image->title->displayName : ($image->title_data ? $image->title_data : null);
 
             // Character also keeps track of these features
             $image->character->rarity_id = $image->rarity_id;
@@ -2029,12 +2035,14 @@ class CharacterManager extends Service
 
             $rarity = ($request->character->is_myo_slot && $request->character->image->rarity_id) ? $request->character->image->rarity : Rarity::find($data['rarity_id']);
             $species = ($request->character->is_myo_slot && $request->character->image->species_id) ? $request->character->image->species : Species::find($data['species_id']);
+            if(isset($data['title_id'])) $title = ($request->character->is_myo_slot && $request->character->image->title_id) ? $request->character->image->title : CharacterTitle::find($data['title_id']);
             if(isset($data['subtype_id']) && $data['subtype_id'])
                 $subtype = ($request->character->is_myo_slot && $request->character->image->subtype_id) ? $request->character->image->subtype : Subtype::find($data['subtype_id']);
             else $subtype = null;
             if(!$rarity) throw new \Exception("Invalid rarity selected.");
             if(!$species) throw new \Exception("Invalid species selected.");
             if($subtype && $subtype->species_id != $species->id) throw new \Exception("Subtype does not match the species.");
+            if(isset($title) && !$title) throw new \Exception("Invalid title selected.");
 
             // Clear old features
             $request->features()->delete();
@@ -2062,6 +2070,8 @@ class CharacterManager extends Service
             $request->rarity_id = $rarity->id;
             $request->subtype_id = $subtype ? $subtype->id : null;
             $request->has_features = 1;
+            $request->title_id = isset($data['title_id']) && $data['title_id'] ? ($data['title_id'] != 'custom' ? $data['title_id'] : null) : null;
+            $request->title_data = isset($data['title_data']) && isset($data['title_data']['full']) ? json_encode($data['title_data']) : null;
             $request->save();
 
             return $this->commitReturn(true);
@@ -2183,6 +2193,8 @@ class CharacterManager extends Service
                 'subtype_id' => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
                 'rarity_id' => $request->rarity_id,
                 'sort' => 0,
+                'title_id' => isset($request->title_id) && $request->title_id ? $request->title_id : null,
+                'title_data' => isset($request->title_data) ? $request->title_data : null
             ]);
 
             // Shift the image credits over to the new image
