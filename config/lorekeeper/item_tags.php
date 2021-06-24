@@ -25,9 +25,9 @@ return [
         'background_color' => '#1fd1a7'
     ],
 
-    'recipe' => [
-        'name' => 'Recipe',
+    'raritybox' => [
+        'name' => 'Rarity Box',
         'text_color' => '#ffffff',
-        'background_color' => '#6D18A7'
+        'background_color' => '#58507D'
     ],
 ];
