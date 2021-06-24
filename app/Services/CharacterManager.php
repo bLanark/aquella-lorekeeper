@@ -132,6 +132,9 @@ class CharacterManager extends Service
             $character = $this->handleCharacter($data, $isMyo);
             if(!$character) throw new \Exception("Error happened while trying to create character.");
 
+            // Create character lineage
+            $lineage = $this->handleCharacterLineage($data, $character, $isMyo);
+
             // Create character image
             $data['is_valid'] = true; // New image of new characters are always valid
             $image = $this->handleCharacterImage($data, $character, $isMyo);
