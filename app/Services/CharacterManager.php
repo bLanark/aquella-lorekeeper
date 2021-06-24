@@ -446,6 +446,9 @@ class CharacterManager extends Service
     {
         $image = Image::make($characterImage->imagePath . '/' . $characterImage->imageFileName);
 
+        // Crop according to the selected area
+        $image->crop($cropWidth, $cropHeight, $points['x0'], $points['y0']);
+
         if(Config::get('lorekeeper.settings.masterlist_image_format') != 'png' && Config::get('lorekeeper.settings.masterlist_image_format') != null && Config::get('lorekeeper.settings.masterlist_image_background') != null) {
             $canvas = Image::canvas($image->width(), $image->height(), Config::get('lorekeeper.settings.masterlist_image_background'));
             $image = $canvas->insert($image, 'center');
@@ -1731,7 +1734,7 @@ class CharacterManager extends Service
 
         // Add a log for the ownership change
         $this->createLog(
-is_object($sender) ? $sender->id : null,
+            is_object($sender) ? $sender->id : null,
             is_object($sender) ? null : $sender,
             $recipient && is_object($recipient) ? $recipient->id : null,
             $recipient && is_object($recipient) ? $recipient->url : ($recipient ? : null),
