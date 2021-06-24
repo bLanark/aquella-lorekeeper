@@ -55,4 +55,12 @@ class CharacterProfile extends Model
     {
         return $this->belongsTo('App\Models\Character\Character', 'character_id');
     }
+
+    /**
+     * Get the custom values for this character.
+     */
+    public function custom_values() 
+    {
+        return $this->hasMany('App\Models\Character\CharacterProfileCustomValue', 'character_id', 'character_id');
+    }
 }
