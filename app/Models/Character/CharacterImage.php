@@ -19,7 +19,7 @@ class CharacterImage extends Model
      * @var array
      */
     protected $fillable = [
-        'character_id', 'user_id', 'species_id', 'subtype_id', 'rarity_id', 'title_id', 'title_data', 'url',
+        'character_id', 'user_id', 'species_id', 'subtype_id', 'subtype_id_2', 'rarity_id', 'title_id', 'title_data', 'url',
         'extension', 'use_cropper', 'hash', 'fullsize_hash', 'sort',
         'x0', 'x1', 'y0', 'y1',
         'description', 'parsed_description',

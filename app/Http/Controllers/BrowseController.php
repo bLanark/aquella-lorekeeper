@@ -155,6 +155,17 @@ class BrowseController extends Controller
             $query->where(function($query) use ($ownerUrl) {
                 $query->where('owner_url','LIKE', '%'.$ownerUrl.'%');
             });
+        }  
+        if($request->get('username')) {
+            $name = $request->get('username');
+
+            // Usernames are prevented from containing spaces, but this is to deal with previously made accounts with spaces in names
+            $name = str_replace('%20', ' ', $name);
+
+            $owners = User::where('name', 'LIKE', '%' . $name . '%')->orWhere('alias', 'LIKE', '%' . $name . '%')->pluck('id')->toArray();
+            $query->where(function($query) use ($owners, $name) {
+                $query->whereIn('user_id', $owners)->orWhere('owner_alias', 'LIKE', '%' . $name . '%');
+            });
         }
 
         // Search only main images
@@ -164,7 +175,21 @@ class BrowseController extends Controller
 
         // Searching on image properties
         if($request->get('species_id')) $imageQuery->where('species_id', $request->get('species_id'));
-        if($request->get('subtype_id')) $imageQuery->where('subtype_id', $request->get('subtype_id'));
+        if($request->get('subtype_id')) {
+            if(!$request->get('search_images')) {
+            $imageQuery->where(function ($query) use($request) {
+                $query->where('subtype_id', $request->get('subtype_id'))
+                   ->orWhere('subtype_id_2', $request->get('subtype_id'));
+              })
+            ->whereIn('id', $query->pluck('character_image_id')->toArray()
+            );
+            }
+            else {
+                $imageQuery->where('subtype_id', $request->get('subtype_id'))
+                ->orWhere('subtype_id_2', $request->get('subtype_id')
+            );
+            }
+        }
         if($request->get('feature_id')) {
             $featureIds = $request->get('feature_id');
             foreach($featureIds as $featureId) {
@@ -303,6 +328,17 @@ class BrowseController extends Controller
             $ownerUrl = $request->get('owner_url');
             $query->where(function($query) use ($ownerUrl) {
                 $query->where('owner_url','LIKE', '%'.$ownerUrl.'%');
+            });
+        }
+        if($request->get('username')) {
+            $name = $request->get('username');
+
+            // Usernames are prevented from containing spaces, but this is to deal with previously made accounts with spaces in names
+            $name = str_replace('%20', ' ', $name);
+
+            $owners = User::where('name', 'LIKE', '%' . $name . '%')->orWhere('alias', 'LIKE', '%' . $name . '%')->pluck('id')->toArray();
+            $query->where(function($query) use ($owners, $name) {
+                $query->whereIn('user_id', $owners)->orWhere('owner_alias', 'LIKE', '%' . $name . '%');
             });
         }
 

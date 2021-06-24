@@ -220,6 +220,11 @@
         {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
     </div>
 
+    <div class="form-group" id="subtypes_2">
+        {!! Form::label('Secondary Subtype (Optional)') !!} @if($isMyo) {!! add_help('This will lock the slot into a particular second subtype. Leave it blank if you would like to give the user a choice, or not select a subtype. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.') !!} @endif
+        {!! Form::select('subtype_id_2', $subtypes, old('subtype_id_2'), ['class' => 'form-control', 'id' => 'subtype_2']) !!}
+    </div>
+
     <div class="form-group">
         {!! Form::label('Character Rarity') !!} @if($isMyo) {!! add_help('This will lock the slot into a particular rarity. Leave it blank if you would like to give the user more choices.') !!} @endif
         {!! Form::select('rarity_id', $rarities, old('rarity_id'), ['class' => 'form-control']) !!}
@@ -280,8 +285,11 @@
       var species = $('#species').val();
       var myo = '<?php echo($isMyo); ?>';
       $.ajax({
-        type: "GET", url: "{{ url('admin/masterlist/check-subtype') }}?species="+species+"&myo="+myo, dataType: "text"
+        type: "GET", url: "{{ url('admin/masterlist/check-subtype/1') }}?species="+species+"&myo="+myo, dataType: "text"
       }).done(function (res) { $("#subtypes").html(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
+      $.ajax({
+        type: "GET", url: "{{ url('admin/masterlist/check-subtype/2') }}?species="+species+"&myo="+myo, dataType: "text"
+      }).done(function (res) { $("#subtypes_2").html(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
     });
 </script>
 
