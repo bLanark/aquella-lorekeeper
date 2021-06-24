@@ -49,7 +49,7 @@ DEVIANTART_CLIENT_SECRET=(client secret as supplied by deviantART)
 DEVIANTART_CALLBACK_URL=/
 ```
 
-## Setting up
+## Setting up 
 
 Composer install:
 ```

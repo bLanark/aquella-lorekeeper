@@ -38,7 +38,7 @@ class AccountController extends Controller
     {
         if(Auth::user()->is_banned)
             return view('account.banned');
-        else 
+        else
             return redirect()->to('/');
     }
 
@@ -51,18 +51,18 @@ class AccountController extends Controller
     {
         return view('account.settings');
     }
-    
+
     /**
-     * Edits the user's profile.
+     * Edits the user's profile.  
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postProfile(Request $request)
-    {
+    {        
         Auth::user()->profile->update([
             'text' => $request->get('text'),
-            'parsed_text' => parse($request->get('text'))
+            'parsed_text' => parse($request->get('text')),
         ]);
         flash('Profile updated successfully.')->success();
         return redirect()->back();
@@ -84,7 +84,24 @@ class AccountController extends Controller
         }
         return redirect()->back();
     }
-    
+    /**
+     * Edits the user's links.  
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postLinks(Request $request)
+    {
+        Auth::user()->profile->update([
+            'disc' => $request->get('disc'),
+            'insta' => $request->get('insta'),
+            'house' => $request->get('house'),
+            'arch' => $request->get('arch'),
+        ]);
+        flash('Profile updated successfully.')->success();
+        return redirect()->back();
+    }
+
     /**
      * Changes the user's password.
      *
@@ -106,7 +123,7 @@ class AccountController extends Controller
         }
         return redirect()->back();
     }
-    
+
     /**
      * Changes the user's email address and sends a verification email.
      *
@@ -162,7 +179,7 @@ class AccountController extends Controller
             'notifications' => $notifications
         ]);
     }
-    
+
     /**
      * Deletes a notification and returns a response.
      *

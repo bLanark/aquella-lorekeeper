@@ -10,16 +10,53 @@
 @if($user->is_banned)
     <div class="alert alert-danger">This user has been banned.</div>
 @endif
-<h1>
-    <img src="/images/avatars/{{ $user->avatar }}" style="width:125px; height:125px; float:left; border-radius:50%; margin-right:25px;">
+
+
+ <h1>
+ <img src="/images/avatars/{{ $user->avatar }}" style="width:125px; height:125px; float:left; border-radius:50%; margin-right:25px;">
     {!! $user->displayName !!}
     <a href="{{ url('reports/new?url=') . $user->url }}"><i class="fas fa-exclamation-triangle fa-xs" data-toggle="tooltip" title="Click here to report this user." style="opacity: 50%; font-size:0.5em;"></i></a>
 
-    @if($user->settings->is_fto)
-        <span class="badge badge-success float-right" data-toggle="tooltip" title="This user has not owned any characters from this world before.">FTO</span>
-    @endif
-</h1>
+   <!-- If you install the user icon extension: the icon goes here:
+
+  <img src="/images/avatars/{{ $user->avatar }}" style="width:125px; height:125px; float:left; border-radius:50%; margin-right:25px;">
+
+  -->
+
+
+
+ <div class="row">
+   <div style="padding-right: 10px;">{!! $user->displayName !!}</div>
+
+   <div class="ulinks" style="padding-top:7px">
+
+   @if($user->profile->disc)
+     <span class="float-left" style="font-size: 1.1rem; padding-left: 10px; opacity: 0.4;" data-toggle="tooltip" title=" {!! $user->profile->disc !!} "><i class="fab fa-discord"></i></span>
+   @endif
+   @if($user->profile->house)
+     <span class="float-left" style="font-size: 1.1rem; padding-left: 10px; opacity: 0.4;" data-toggle="tooltip" title=" {!! $user->profile->house !!}&#64;toyhou.se "><a href="https://toyhou.se/{!! $user->profile->house !!}"><i class="fas fa-home"></i></a></span>
+   @endif
+   @if($user->profile->arch)
+     <span class="float-left" style="font-size: 1.1rem; padding-left: 10px; opacity: 0.4;" data-toggle="tooltip" title=" {!! $user->profile->arch !!}&#64;twitter"><a href="https://archiveofourown.org/users/{!! $user->profile->arch !!}"><i class="fas fa-file-alt"></i></a></span>
+   @endif
+   @if($user->profile->insta)
+     <span class="float-left" style="font-size: 1.1rem; padding-left: 10px; opacity: 0.4;" data-toggle="tooltip" title=" {!! $user->profile->insta !!}&#64;instagram "><a href="https://www.instagram.com/{!! $user->profile->insta !!}"><i class="fab fa-instagram"></i></a></span>
+   @endif
+
+ </div>
+ </div>
+
+ </h1>
 <div class="mb-4">
+<div class="mb-1">
+    <div class="row">
+        <div class="col-md-2 col-4"><h5>Alias</h5></div>
+        <div class="col-md-10 col-8">{!! $user->displayAlias !!}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-4"><h5>Rank</h5></div>
+        <div class="col-md-10 col-8">{!! $user->rank->displayName !!} {!! add_help($user->rank->parsed_description) !!}</div>
+    </div>
     <div class="row">
         <div class="row col-md-6">
             <div class="col-md-2 col-4"><h5>Alias</h5></div>

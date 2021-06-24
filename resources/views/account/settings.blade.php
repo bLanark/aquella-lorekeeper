@@ -22,6 +22,39 @@
         <input type="submit" class="pull-right btn btn-sm btn-primary">
     </form>
 </div>
+    <h3>Links</h3>
+  <p>Add your username to the forms only, please. A link will be created automatically.</p>
+
+{!! Form::open(['url' => 'account/socials']) !!}
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Discord</label> <i class="fas fa-question-circle" data-toggle="tooltip" title=" Enter your usename and number code, please! - Example: username#0001 "></i>
+            <div class="col-md-9">
+                {!! Form::text('disc', Auth::user()->profile->disc, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Instagram <i class="fas fa-question-circle" data-toggle="tooltip" title=" Enter your username, please!  "></i></label>
+            <div class="col-md-9">
+                {!! Form::text('insta', Auth::user()->profile->insta, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Archieve Of Your Own (AO3) <i class="fas fa-question-circle" data-toggle="tooltip" title=" Enter your username, please!  "></i></label>
+            <div class="col-md-9">
+                {!! Form::text('arch', Auth::user()->profile->arch, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Toyhou.se <i class="fas fa-question-circle" data-toggle="tooltip" title=" Enter your username, please!  "></i></label>
+            <div class="col-md-9">
+                {!! Form::text('house', Auth::user()->profile->house, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="text-right">
+            {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+        </div>
+
+{!! Form::close() !!}
 
 
 <div class="card p-3 mb-2">
@@ -45,6 +78,11 @@
             <div class="col-md-10">
                 {!! Form::select('birthday_setting', ['0' => '0: No one can see your birthday.', '1' => '1: Members can see your day and month.', '2' => '2: Anyone can see your day and month.', '3' => '3: Full date public.'],Auth::user()->settings->birthday_setting, ['class' => 'form-control']) !!}
             </div>
+{!! Form::open(['url' => 'account/email']) !!}
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label">Email Address</label>
+        <div class="col-md-9">
+            {!! Form::text('email', Auth::user()->email, ['class' => 'form-control']) !!}
         </div>
         <div class="text-right">
             {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
@@ -91,6 +129,23 @@
         </div>
         <div class="text-right">
             {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+{!! Form::open(['url' => 'account/password']) !!}
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label">Old Password</label>
+        <div class="col-md-9">
+            {!! Form::password('old_password', ['class' => 'form-control']) !!}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label">New Password</label>
+        <div class="col-md-9">
+            {!! Form::password('new_password', ['class' => 'form-control']) !!}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label">Confirm New Password</label>
+        <div class="col-md-9">
+            {!! Form::password('new_password_confirmation', ['class' => 'form-control']) !!}
         </div>
     {!! Form::close() !!}
 </div>
