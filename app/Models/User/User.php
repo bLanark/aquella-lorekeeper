@@ -598,7 +598,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return CharacterBookmark::where('user_id', $this->id)->where('character_id', $character->id)->first();
     }
 
-<<<<<<< HEAD
     /**
      * Checks if the user has the named recipe
      *
@@ -633,7 +632,6 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $recipeCollection;
     }
-=======
 
 
     /**
@@ -652,6 +650,5 @@ class User extends Authenticatable implements MustVerifyEmail
        $total = $submissionCount + $claimCount + $designCount + $myoCount + $transferCount + $tradeCount;
        return $total;
      }
->>>>>>> noti/master
 
 }
