@@ -136,10 +136,7 @@ return [
         ],
         'artist_url.*' => [
             'url' => 'One or more of the artist URL(s) is invalid.',
-        ],
-        'g-recaptcha-response' => [
-            'recaptchav3' => 'A captcha error has occurred. If you believe this is in error, please contact the site administrator.',
-        ],
+        ]
     ],
 
     /*
