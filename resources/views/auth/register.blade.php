@@ -105,6 +105,19 @@
                 </div>
             </div>
         </div>
+		
+		<div class="form-group row">
+            <div class="col-md-6 offset-md-4">
+		        {!! NoCaptcha::renderJs() !!}
+		        {!! NoCaptcha::display() !!}
+				
+				@if ($errors->has('g-recaptcha-response'))
+	                <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                    </span>
+                @endif
+			</div>
+		</div>
 
         <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">

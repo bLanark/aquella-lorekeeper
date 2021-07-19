@@ -5,77 +5,29 @@ Lorekeeper is a framework for managing deviantART-based ARPGs/closed species mas
 Demo site: [http://lorekeeper.me/](http://lorekeeper.me/)
 Wiki for users: [http://lorekeeper-arpg.wikidot.com/](http://lorekeeper-arpg.wikidot.com/)
 
-# Features
+# Info
 
-- Users can create an account which will hold their characters and earnings from participating in the game.
-- Mods can add characters to the masterlist, which can also record updates to a character's design. (Yes, multiple mods can work on the masterlist at the same time.)
-- Characters get a little bio section on their profile that their owners can edit. Personalisation!
-- Users' ownership histories (including whether they are an FTO) and characters' previous owners are tracked.
-- Users can submit art to the submission queue, which mods can approve/reject. This dispenses rewards automagically.
-- Users can spend their hard-earned rewards immediately, without requiring mods to look over their trackers (because it's all been pre-approved).
-- Characters, items and currency can be transferred between users. Plus...secure trading between users for game items/currency/characters on-site is also a thing.
-- Logs for all transfers are kept, so it's easy to check where everything went. 
-- The masterlist is king, so ownership can't be ambiguous, and the current design of a character is always easily accessible.
-- Speaking of which, you can search for characters based on traits, rarity, etc. Also, trait/item/etc. data get their own searchable lists - no need to create additional pages detailing restrictions on how a trait should be drawn/described.
-- Unless you want to, in which case you can add custom pages in HTML without touching the codebase!
-- A raffle roller for consecutive raffles! Mods can add/remove tickets and users who have already won something will be automatically removed from future raffles in the sequence.
-- ...and more! Please refer to the [Wiki](http://lorekeeper-arpg.wikidot.com/) for more information and instructions for usage.
+This is one of several branches I maintain for sharing modifications or projects I've made. For my general fixes branch, see master.
 
-# Setup
+# Captcha
 
-Important: For those who are not familiar with web dev, please refer to the [Wiki](http://lorekeeper-arpg.wikidot.com/) for a much more detailed set of instructions!!
+This adds a captcha to the registration page. It's not entirely finished; the error messages are not correctly hooked up. It does, however, *work*-- allowing registrations that satisfy the captcha and disallowing those that do not. And in the meantime, it spits out a rough but descriptive enough error. Given that it was done out of necessity, it did the trick.
 
-## Obtain a copy of the code
+This makes use of the [anhskohbo/No-Captcha](https://github.com/anhskohbo/no-captcha) library. Composer.json has already been updated to include this, so you can just run `composer update` or equivalent after pulling the branch.
 
-```
-$ git clone https://github.com/corowne/lorekeeper.git
-```
+### How to Use
 
-## Configure .env in the directory
+These instructions are derived from those on the package itself. Note that in this case Laravel will indeed auto-discover the package. So we skip directly to configuration.
 
-```
-$ cp .env.example .env
-```
-
-deviantART client ID and secret are required for this step.
-While obtaining the ID and secret, also add whitelist entries for redirection for your site URL (if being hosted) or localhost (if working locally).
-Add the following to .env, filling them in as required (also fill in the rest of .env where relevant):
-```
-CONTACT_ADDRESS=(contact email address)
-DEVIANTART_ACCOUNT=(username of ARPG group account)
-
-DEVIANTART_CLIENT_ID=(client ID as supplied by deviantART)
-DEVIANTART_CLIENT_SECRET=(client secret as supplied by deviantART)
-DEVIANTART_CALLBACK_URL=/
-```
+First, obtain your secret and site keys from Google; you can do so [here](https://www.google.com/recaptcha/admin).
 
 ## Setting up 
+Then add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` to your **.env** file, like so:
 
-Composer install:
 ```
-$ composer install
+NOCAPTCHA_SECRET=secret-key
+NOCAPTCHA_SITEKEY=site-key
 ```
-
-Generate app key and run database migrations:
-```
-$ php artisan key:generate 
-$ php artisan migrate
-```
-
-Add basic site data:
-```
-$ php artisan add-site-settings
-$ php artisan add-text-pages
-$ php artisan copy-default-images
-```
-
-Finally, set up the admin account for logging in:
-```
-$ php artisan setup-admin-user
-```
-
-You will need to send yourself the verification email and then link your dA account as prompted.
-
-## Contact
 
 If you have any questions, please feel free to contact me through email: corowne@gmail.com
+That's it! The remainder of the configuration is accounted for by this branch.
